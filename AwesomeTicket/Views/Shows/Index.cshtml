@@ -1,0 +1,18 @@
+﻿@model IEnumerable<AwesomeTicket.Models.Show>
+
+<h2>Shows</h2>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Location</th>
+        <th>Date</th>
+    </tr>
+    @foreach (var s in Model)
+    {
+        <tr>
+            <td>@s.Title</td>
+            <td>@s.Location</td>
+            <td>@s.Date.ToShortDateString()</td>
+        </tr>
+    }
+</table>
