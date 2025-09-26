@@ -1,18 +1,47 @@
 ﻿@model IEnumerable<AwesomeTicket.Models.Show>
 
+@{
+    ViewData["Title"] = "Shows";
+}
+
 <h2>Shows</h2>
-<table>
-    <tr>
-        <th>Title</th>
-        <th>Location</th>
-        <th>Date</th>
-    </tr>
-    @foreach (var s in Model)
-    {
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add Show</a>
+</p>
+
+<table class="table">
+    <thead>
         <tr>
-            <td>@s.Title</td>
-            <td>@s.Location</td>
-            <td>@s.Date.ToShortDateString()</td>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Location</th>
+            <th>Owner</th>
+            <th></th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Title</td>
+                <td>@item.Description</td>
+                <td>@item.Category?.Name</td> <!-- 外键显示分类名 -->
+                <td>@item.Date.ToShortDateString()</td>
+                <td>@item.Time</td>
+                <td>@item.Location</td>
+                <td>@item.Owner</td>
+            
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                 
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
