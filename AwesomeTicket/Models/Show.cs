@@ -17,7 +17,7 @@ namespace AwesomeTicket.Models
 
         public int CategoryId { get; set; }
 
-        [ValidateNever]   // ✅ 关键修复点
+        [ValidateNever]  
         public Category Category { get; set; }
     }
 }

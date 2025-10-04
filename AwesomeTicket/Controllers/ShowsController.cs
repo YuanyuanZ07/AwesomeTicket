@@ -59,7 +59,7 @@ namespace AwesomeTicket.Controllers
             }
             else
             {
-                // 打印错误调试
+                
                 foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
                 {
                     Console.WriteLine("⚠️ ModelState Error: " + error.ErrorMessage);
