@@ -15,15 +15,16 @@ namespace AwesomeTicket.Controllers
             _context = context;
         }
 
+        // GET: Shows
         public async Task<IActionResult> Index()
         {
             var shows = _context.Shows
-                .Include(s => s.Category)                 
-                .OrderByDescending(s => s.CreatedAt);   
+                .Include(s => s.Category)
+                .OrderByDescending(s => s.CreatedAt);
             return View(await shows.ToListAsync());
         }
 
-        
+        // GET: Shows/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -37,31 +38,39 @@ namespace AwesomeTicket.Controllers
             return View(show);
         }
 
-        
+        // GET: Shows/Create
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
             return View();
         }
 
-        
+        // POST: Shows/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,CategoryId,Date,Time,Location,Owner")] Show show)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,Location,Date,Time,Owner,CategoryId")] Show show)
         {
             if (ModelState.IsValid)
             {
-                show.CreatedAt = DateTime.Now;  
+                show.CreatedAt = DateTime.Now;
                 _context.Add(show);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                // 打印错误调试
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine("⚠️ ModelState Error: " + error.ErrorMessage);
+                }
             }
 
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", show.CategoryId);
             return View(show);
         }
 
-      
+        // GET: Shows/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -73,10 +82,10 @@ namespace AwesomeTicket.Controllers
             return View(show);
         }
 
-        
+        // POST: Shows/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CategoryId,Date,Time,Location,Owner,CreatedAt")] Show show)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Location,Date,Time,Owner,CreatedAt,CategoryId")] Show show)
         {
             if (id != show.Id) return NotFound();
 
@@ -101,7 +110,7 @@ namespace AwesomeTicket.Controllers
             return View(show);
         }
 
-       
+        // GET: Shows/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -115,14 +124,17 @@ namespace AwesomeTicket.Controllers
             return View(show);
         }
 
-        
+        // POST: Shows/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var show = await _context.Shows.FindAsync(id);
-            _context.Shows.Remove(show);
-            await _context.SaveChangesAsync();
+            if (show != null)
+            {
+                _context.Shows.Remove(show);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
     }

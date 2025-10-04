@@ -1,4 +1,6 @@
-﻿namespace AwesomeTicket.Models
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
+namespace AwesomeTicket.Models
 {
     public class Show
     {
@@ -13,8 +15,9 @@
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-      
         public int CategoryId { get; set; }
+
+        [ValidateNever]   // ✅ 关键修复点
         public Category Category { get; set; }
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AwesomeTicket.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250926225656_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251004013550_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

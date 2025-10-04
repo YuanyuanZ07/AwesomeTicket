@@ -1,48 +1,44 @@
 ﻿@model IEnumerable<AwesomeTicket.Models.Show>
 
 @{
-    ViewData["Title"] = "Shows";
+    ViewData["Title"] = "Shows List";
 }
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="text-primary">Upcoming Shows</h2>
-        <a asp-action="Create" class="btn btn-success">+ Add Show</a>
-    </div>
+<h1>Shows</h1>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
 
-    <table class="table table-striped table-hover table-bordered shadow-sm">
-        <thead class="table-dark">
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Location</th>
+            <th>Owner</th>
+            <th>Category</th>
+            <th>Created</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
             <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Location</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Owner</th>
-                <th>Created</th>
-                <th>Category</th>
-                <th>Actions</th>
+                <td>@item.Title</td>
+                <td>@item.Date.ToShortDateString()</td>
+                <td>@item.Time</td>
+                <td>@item.Location</td>
+                <td>@item.Owner</td>
+                <td>@(item.Category?.Name ?? "—")</td>
+                <td>@item.CreatedAt.ToString("g")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Details</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.Title</td>
-                    <td>@item.Description</td>
-                    <td>@item.Location</td>
-                    <td>@item.Date.ToShortDateString()</td>
-                    <td>@item.Time.ToString(@"hh\:mm")</td>
-                    <td>@item.Owner</td>
-                    <td>@item.CreatedAt.ToShortDateString()</td>
-                    <td>@item.Category?.Name</td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+        }
+    </tbody>
+</table>

@@ -1,21 +1,29 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using AwesomeTicket.Data;
 using AwesomeTicket.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AwesomeTicket.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            // 显示所有事件列表，按创建时间从新到旧排序
+            var shows = _context.Shows
+                .Include(s => s.Category)
+                .OrderByDescending(s => s.CreatedAt);
+            return View(await shows.ToListAsync());
         }
 
         public IActionResult Privacy()
